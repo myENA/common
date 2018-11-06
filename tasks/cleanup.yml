@@ -1,0 +1,54 @@
+---
+- name: find cloud-init data
+  find:
+    paths: /var/lib/cloud/instance
+    patterns: "*.txt*"
+  register: files_to_delete
+  when: debug is not defined
+
+- name: remove cloud-init data
+  file:
+    path: "{{ item.path }}"
+    state: absent
+  with_items: "{{ files_to_delete.files }}"
+  when: debug is not defined
+
+- name: remove the cloud-init package
+  package:
+    name: cloud-init
+    state: absent
+  when: debug is not defined
+
+- name: determine groups
+  getent:
+    database: group
+
+- name: remove cloud user
+  user:
+    name: centos
+    state: absent
+    remove: yes
+  when: "'centos' in ansible_facts.getent_group"
+  ignore_errors: yes
+
+- name: remove cloud user
+  user:
+    name: ubuntu
+    state: absent
+    remove: yes
+  when: "'ubuntu' in ansible_facts.getent_group"
+  ignore_errors: yes
+
+- name: Send notification message via Slack
+  slack:
+    icon_emoji: ansible
+    token: "{{ slack_token }}"
+    msg: "{{ lookup('env','STACK')|default(ansible_nodename, true) }} - {{ stack_host }} launched successfully"
+  when: slackfail is not defined
+
+- name: Restart
+  command: 'shutdown -r +1'
+  async: 0
+  poll: 0
+  ignore_errors: true
+  when: debug is not defined

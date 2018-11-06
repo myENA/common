@@ -1,0 +1,13 @@
+galaxy_info:
+  author: David Mabry
+  description: Common tasks for all ENA stacks
+  company: Education Networks of America
+
+  license: license (Apache)
+
+  min_ansible_version: 2.6
+  platforms: [{'name': 'Centos', 'versions': ['all']}, {'name': 'Ubuntu', 'versions': ['all']}]
+
+  galaxy_tags: []
+dependencies:
+  - { src: "https://github.com/geerlingguy/ansible-role-ntp", name: geerlingguy.ntp }

@@ -1,0 +1,8 @@
+- name: allow password authentication for sshd
+  lineinfile: dest=/etc/ssh/sshd_config regexp='^#?PasswordAuthentication' line='PasswordAuthentication yes'
+
+- name: Restart sshd
+  become: true
+  systemd:
+    name: sshd
+    state: restarted

@@ -1,0 +1,23 @@
+- name: Add required base packages - apt
+  apt: 
+    name: "{{ packages }}" 
+    state: latest
+  vars:
+    packages:
+    - wget
+    - curl
+    - haveged
+  when: ansible_pkg_mgr == 'apt'
+
+
+- name: Add required base packages - yum
+  yum:
+    name: "{{ packages }}"
+    state: latest
+  vars:
+    packages:
+    - wget
+    - curl
+    - haveged
+    - yum-plugin-priorities
+  when: ansible_pkg_mgr == 'yum'

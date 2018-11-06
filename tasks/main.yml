@@ -1,0 +1,7 @@
+---
+# tasks file for stack-common/
+  - import_tasks: sshd.yml
+  - import_tasks: yum-repos.yml
+  - import_tasks: packages.yml
+  - import_tasks: services.yml
+  - import_tasks: users.yml

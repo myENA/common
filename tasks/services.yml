@@ -1,0 +1,5 @@
+- name: Enable snd start service haveged
+  service:
+    name: haveged
+    enabled: yes
+    state: started
